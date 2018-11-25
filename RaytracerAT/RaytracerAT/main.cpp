@@ -16,11 +16,11 @@ int main()
 
 	S.addLight(LightSource(Vec3(50, -50, 100)));
 
-	S.addSurface(new Plane(1, Vec3(0, 0, -1), sf::Color(13, 71, 171)));
+	//S.addSurface(new Plane(1, Vec3(0, 0, -1), sf::Color(13, 71, 171)));
 
-	S.addSurface(new Sphere(Vec3(3, 25, 6), 1, sf::Color(171, 113, 14)));
-	S.addSurface(new Sphere(Vec3(-3, 16, 0), 1, sf::Color(85, 139, 87)));
-	S.addSurface(new Sphere(Vec3(3, 15, 0), 1, sf::Color(140, 86, 138)));
+	S.addSurface(new Sphere(Vec3(3, 25, 6), 1, sf::Color(255, 0, 0)));
+	S.addSurface(new Sphere(Vec3(-3, 16, 0), 1, sf::Color(0, 255, 0)));
+	S.addSurface(new Sphere(Vec3(3, 15, 0), 1, sf::Color(0, 0, 255)));
 
 	S.createImage(0);
 	S.saveImage(0, "Image.png");

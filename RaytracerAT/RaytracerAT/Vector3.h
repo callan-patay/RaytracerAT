@@ -20,6 +20,8 @@ public:
 	Vec3 operator/(const Vec3& b) const;
 
 	bool operator==(const Vec3& b) const;
+	float& operator[](const unsigned int i) { return (&_x)[i]; }
+	const float& operator[](const unsigned int i) const { return (&_x)[i]; }
 
 
 	float norme2() const;

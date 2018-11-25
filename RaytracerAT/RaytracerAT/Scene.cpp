@@ -2,6 +2,7 @@
 #include "Colour.h"
 
 #include <iostream>
+#include <algorithm>
 #include <cmath>
 
 Scene::Scene(): Scene(sf::Color(0,0,0), 0.1)
@@ -85,10 +86,18 @@ void Scene::createImage(unsigned int numCam, int depthMax, bool debug)
 
 			Ray r_camera = camList[numCam].createRay(x, y);
 			sf::Color c = launchRay(numCam, r_camera, depthMax);
+			clamp(0, 255, c.r);
+			clamp(0, 255, c.g);
+			clamp(0, 255, c.b);
 			camList[numCam]._result.setPixel(x, y, c);
 		}
 	}
 
+}
+
+float Scene::clamp(const float & lo, const float & hi, const float & v)
+{
+	return std::max(lo, std::min(hi, v));
 }
 
 void Scene::displayImage(unsigned int numCam)

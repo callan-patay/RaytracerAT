@@ -9,8 +9,14 @@
 #include "Ray.h"
 #include "Camera.h"
 #include "LightSource.h"
+#include "BVH.h"
 
-
+//struct Node {
+//	//bounding Volume;
+//	Node leftChild;
+//	Node rightChild;
+//
+//};
 
 
 class Scene
@@ -30,7 +36,7 @@ public:
 	void createImage(unsigned int numCam, int depthMax);
 	void createImage(unsigned int numCam, bool debug);
 	void createImage(unsigned int numCam, int depthMax, bool debug);
-
+	float clamp(const float &lo, const float &hi, const float &v);
 	void displayImage(unsigned int numCam);
 	void saveImage(unsigned int numCam, const std::string fileName);
 
