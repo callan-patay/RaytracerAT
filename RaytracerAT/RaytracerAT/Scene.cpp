@@ -3,7 +3,9 @@
 
 #include <iostream>
 #include <algorithm>
+#include <string>
 #include <cmath>
+#include <thread>
 
 Scene::Scene(): Scene(sf::Color(0,0,0), 0.1)
 {
@@ -17,7 +19,7 @@ Scene::Scene(float ambient): Scene(sf::Color(0,0,0), ambient)
 {
 }
 
-Scene::Scene(sf::Color c, float ambient): ambientColour(c), ambientLight(ambient)
+Scene::Scene(sf::Color c, float ambient) : ambientColour(c), ambientLight(ambient), bvh(nullptr)
 {
 }
 
@@ -28,6 +30,8 @@ Scene::~Scene()
 	{
 		delete o;
 	}
+
+	delete bvh;
 }
 
 void Scene::addCamera(Camera c)
@@ -43,6 +47,21 @@ void Scene::addLight(LightSource l)
 void Scene::addSurface(Surface * s)
 {
 	objList.push_back(s);
+}
+
+void Scene::renderSection(int heightstart, int heightfinish, int width, int height, int numCam, int depthMax)
+{
+
+	for (int y = heightstart; y < heightfinish; y++)
+	{
+		for (int x = 0; x < width; x++)
+		{
+			Ray r_camera = camList[numCam].createRay(x, y);
+			sf::Color c = launchRay(numCam, r_camera, depthMax);
+
+			camList[numCam]._result.setPixel(x, y, c);
+		}
+	}
 }
 
 void Scene::createImage(unsigned int numCam)
@@ -70,30 +89,26 @@ void Scene::createImage(unsigned int numCam, int depthMax, bool debug)
 	int p = 0;
 	int r = 0;
 	
-	for (int y = 0; y < h; y++)
-	{
-		for (int x = 0; x < w; x++)
-		{
-			if (debug)
-			{
-				r += 1;
-				if (r > b)
-				{
-					p += 1;
-					r = 0;
-				}
-			}
+	//please ignore this
+	int zero = 0;
+	int one = (h / 4) * 2;
+	int two = (h / 4) * 3;
+	int three = h / 4;
+	int four = 4;
+	std::thread thread1(&Scene::renderSection,this, zero, three, w, h, numCam, depthMax);
+	std::thread thread2(&Scene::renderSection,this,  three, one , w, h, numCam, depthMax);
+	std::thread thread3(&Scene::renderSection,this, one, two, w, h, numCam, depthMax);
+	std::thread thread4(&Scene::renderSection, this, two, h, w, h, numCam, depthMax);
+	thread1.join();
+	thread2.join();
+	thread3.join();
+	thread4.join();
 
-			Ray r_camera = camList[numCam].createRay(x, y);
-			sf::Color c = launchRay(numCam, r_camera, depthMax);
-			clamp(0, 255, c.r);
-			clamp(0, 255, c.g);
-			clamp(0, 255, c.b);
-			camList[numCam]._result.setPixel(x, y, c);
-		}
-	}
 
 }
+
+
+
 
 float Scene::clamp(const float & lo, const float & hi, const float & v)
 {
@@ -139,12 +154,20 @@ void Scene::saveImage(unsigned int numCam, const std::string fileName)
 	camList[numCam].Image().saveToFile(fileName);
 }
 
+void Scene::createBVH()
+{
+	bvh = new BVH(&objList);
+}
+
 sf::Color Scene::launchRay(unsigned int numCam, const Ray & ray, int depth)
 {
 	if (depth <= 0)
 	{
 		return sf::Color(0, 0, 0);
 	}
+
+
+	
 
 	std::pair<Surface*, float> P = Intersection(ray);
 
@@ -165,7 +188,9 @@ sf::Color Scene::launchRay(unsigned int numCam, const Ray & ray, int depth)
 		sf::Color lightReflect = launchRay(numCam, rayReflect, depth - 1)*(surface->_material._reflection);
 		lightCalc = lightCalc + lightReflect * 2;
 	}
-
+	clamp(0, 255, lightCalc.r);
+	clamp(0, 255, lightCalc.g);
+	clamp(0, 255, lightCalc.b);
 
 
 	return lightCalc;

@@ -31,7 +31,7 @@ public:
 	void addCamera(Camera);
 	void addLight(LightSource);
 	void addSurface(Surface*);
-
+	void renderSection(int heightstart, int heightfinish, int width, int height, int numCam, int depthMax);
 	void createImage(unsigned int numCam);
 	void createImage(unsigned int numCam, int depthMax);
 	void createImage(unsigned int numCam, bool debug);
@@ -39,6 +39,7 @@ public:
 	float clamp(const float &lo, const float &hi, const float &v);
 	void displayImage(unsigned int numCam);
 	void saveImage(unsigned int numCam, const std::string fileName);
+	void createBVH();
 
 private:
 	sf::Color launchRay(unsigned int numCam, const Ray&, int depth);
@@ -50,7 +51,7 @@ private:
 
 	sf::Color ambientColour;
 	float ambientLight;
-
+	BVH* bvh;
 	std::vector<Surface*> objList;
 	std::vector<Camera> camList;
 	std::vector<LightSource> lightList;

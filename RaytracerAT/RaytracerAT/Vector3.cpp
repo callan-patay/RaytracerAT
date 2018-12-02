@@ -21,7 +21,7 @@ Vec3 Vec3::operator-(const Vec3 & b) const
 
 float Vec3::operator*(const Vec3 & b) const
 {
-	return scalar_product(b);
+	return dot_product(b);
 }
 
 Vec3 Vec3::operator*(const float & b) const
@@ -40,19 +40,21 @@ bool Vec3::operator==(const Vec3 & b) const
 	return (_x == b._x && _y == b._y && _z == b._z);
 }
 
-float Vec3::norme2() const
+
+
+float Vec3::length2() const
 {
 	return _x*_x + _y*_y + _z*_z;
 }
 
-float Vec3::norme() const
+float Vec3::length() const
 {
-	return sqrt(norme2());
+	return sqrt(length2());
 }
 
 void Vec3::normalize()
 {
-	float n = norme();
+	float n = length();
 	if (n != 0)
 	{
 		_x /= n;
@@ -61,7 +63,7 @@ void Vec3::normalize()
 	}
 }
 
-float Vec3::scalar_product(const Vec3 & v) const
+float Vec3::dot_product(const Vec3 & v) const
 {
 	return _x*v._x + _y *v._y + _z*v._z;
 }

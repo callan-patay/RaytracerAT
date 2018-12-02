@@ -24,7 +24,7 @@ class BVH
 
 public:
 	BVH(std::vector<Surface*>* surfaces, int leafSize = 4);
-	std::pair<Surface*, float> Intersection(const Ray& ray, bool occlusion) const;
+	std::pair<Surface*, float> Intersection(const Ray& ray) const;
 
 	~BVH();
 

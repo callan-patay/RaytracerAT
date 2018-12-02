@@ -3,8 +3,8 @@
 class Sphere : public Surface
 {
 public:
-	Sphere(Vec3 centre, float ray, sf::Color, Material);
-	Sphere(Vec3 centre, float ray, sf::Color);
+	Sphere(Vec3 centre, float radius, sf::Color, Material);
+	Sphere(Vec3 centre, float radius, sf::Color);
 	~Sphere() = default;
 
 
@@ -12,7 +12,7 @@ public:
 	std::pair<bool, float> Collision(const Ray&);
 
 	BBox getBBox() const {
-		return BBox(_centre - Vec3(_ray, _ray, _ray), _centre + Vec3(_ray, _ray, _ray));
+		return BBox(_centre - Vec3(_radius, _radius, _radius), _centre + Vec3(_radius, _radius, _radius));
 	}
 
 	Vec3 getCentroid() const {
@@ -21,6 +21,6 @@ public:
 
 private:
 	Vec3 _centre;
-	float _ray;
+	float _radius;
 };
 

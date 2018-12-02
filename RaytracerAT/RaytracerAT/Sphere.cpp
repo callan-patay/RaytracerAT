@@ -5,11 +5,11 @@
 
 
 
-Sphere::Sphere(Vec3 centre, float ray, sf::Color c , Material m) : Surface(c,m), _centre(centre), _ray(ray)
+Sphere::Sphere(Vec3 centre, float radius, sf::Color c , Material m) : Surface(c,m), _centre(centre), _radius(radius)
 {
 }
 
-Sphere::Sphere(Vec3 centre, float ray, sf::Color c): Sphere(centre, ray, c, Material(50, 0.0))
+Sphere::Sphere(Vec3 centre, float radius, sf::Color c): Sphere(centre, radius, c, Material(50, 0.0))
 {
 }
 
@@ -22,9 +22,9 @@ Vec3 Sphere::Normal(const Vec3 & pos)
 
 std::pair<bool, float> Sphere::Collision(const Ray & r)
 {
-	float a = r._direction.norme2();
+	float a = r._direction.length2();
 	float b = 2 * (r._origin * r._direction - _centre * r._direction);
-	float c = r._origin.norme2() + _centre.norme2() - (r._origin * _centre) * 2 - _ray*_ray;
+	float c = r._origin.length2() + _centre.length2() - (r._origin * _centre) * 2 - _radius*_radius;
 
 	float delta = b*b - 4 * a*c;
 
