@@ -156,7 +156,8 @@ void Scene::saveImage(unsigned int numCam, const std::string fileName)
 
 void Scene::createBVH()
 {
-	bvh = new BVH(&objList);
+	bvh = new BVH();
+	bvh->build(objList);
 }
 
 sf::Color Scene::launchRay(unsigned int numCam, const Ray & ray, int depth)

@@ -127,8 +127,10 @@
   <ItemGroup>
     <ClCompile Include="BBox.cpp" />
     <ClCompile Include="BVH.cpp" />
+    <ClCompile Include="BVHNode.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Colour.cpp" />
+    <ClCompile Include="ComparePrimitives.cpp" />
     <ClCompile Include="LightSource.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Material.cpp" />
@@ -143,8 +145,10 @@
   <ItemGroup>
     <ClInclude Include="BBox.h" />
     <ClInclude Include="BVH.h" />
+    <ClInclude Include="BVHNode.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Colour.h" />
+    <ClInclude Include="ComparePrimitives.h" />
     <ClInclude Include="LightSource.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Plane.h" />

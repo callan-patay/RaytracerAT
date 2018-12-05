@@ -1,31 +1,37 @@
 #pragma once
 #include "BBox.h"
+#include "BVHNode.h"
 #include <vector>
 #include <stdint.h>
+#include <algorithm>
 #include "Surface.h"
 #include "Ray.h"
 
 
-struct BVHFlatNode {
-	BBox bbox;
-	int start, nPrims, rightOffSet;
-
+struct StackItem
+{
+	BVHNode* ptr;
+	float t;
 };
 
 
 class BVH
 {
-	int nNodes, nLeafs, leafSize;
-	std::vector<Surface*>* build_prims;
-
-	void build();
-
-	BVHFlatNode *flatTree;
-
 public:
-	BVH(std::vector<Surface*>* surfaces, int leafSize = 4);
-	std::pair<Surface*, float> Intersection(const Ray& ray) const;
-
+	BVH();
 	~BVH();
+
+
+
+	void build(std::vector<Surface*> &objs);
+	void buildRecursive(int leftIndex, int rightIndex, BVHNode* node, int depth);
+private:
+	std::vector<Surface*> copies;
+	std::vector<BVHNode> nodes;
+	BBox worldBox;
+	int left_index;
+	int right_index;
+	int depth;
+
 
 };

@@ -9,6 +9,8 @@
 
 
 
+
+
 int main()
 {
 	Scene S;
@@ -23,7 +25,7 @@ int main()
 	//S.addSurface(new Sphere(Vec3(0, 2, 0), 0.5, sf::Color(0, 255, 0)));
 	//S.addSurface(new Sphere(Vec3(0, 3, 0), 0.5, sf::Color(0, 0, 255)));
 
-	S.addSurface(new Triangle(Vec3(0, 1, 0), Vec3(3, 0, 5), Vec3(0, 5, 2.5), sf::Color(255, 0, 0)));
+	//S.addSurface(new Triangle(Vec3(0, 1, 0), Vec3(3, 0, 5), Vec3(0, 5, 2.5), sf::Color(255, 0, 0)));
 
 
 	float _x = 10;
@@ -37,11 +39,11 @@ int main()
 		}
 	}
 
-	//S.createBVH();
+	S.createBVH();
 	S.createImage(0);
 	S.saveImage(0, "Image.png");
 
 
 
-	return EXIT_SUCCESS;
+	return 0;
 }
