@@ -3,7 +3,11 @@
 
 #include "BBox.h"
 
-
+struct BVHChildren
+{
+	BVHNode leftChild;
+	BVHNode rightChild;
+};
 
 
 class BVHNode
@@ -18,6 +22,7 @@ public:
 	void setBBox(BBox box);
 	void makeLeaf(unsigned int index_, unsigned int n_objs_);
 	void makeNode(unsigned int left_index_, unsigned int n_objs_);
+	BVHChildren childNodes;
 private:
 	BBox bbox;
 	bool leaf;

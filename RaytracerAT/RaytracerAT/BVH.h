@@ -4,9 +4,13 @@
 #include <vector>
 #include <stdint.h>
 #include <algorithm>
-#include "Surface.h"
+#include <limits>
+#include <stack>
 #include "Ray.h"
 
+class Surface;
+
+constexpr float infinity = std::numeric_limits<float>::max();
 
 struct StackItem
 {
@@ -25,13 +29,18 @@ public:
 
 	void build(std::vector<Surface*> &objs);
 	void buildRecursive(int leftIndex, int rightIndex, BVHNode* node, int depth);
+	bool intersect(const Ray& ray);
+	//bool intersect(const Ray& ray)
+
+
 private:
 	std::vector<Surface*> copies;
 	std::vector<BVHNode> nodes;
+	BVHNode rootNode;
 	BBox worldBox;
 	int left_index;
 	int right_index;
 	int depth;
-
+	std::stack<StackItem> stack;
 
 };

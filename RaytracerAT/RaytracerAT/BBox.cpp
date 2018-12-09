@@ -1,5 +1,6 @@
 #include "BBox.h"
 #include <algorithm>
+#include <utility>
 BBox::BBox()
 {
 }
@@ -14,9 +15,46 @@ BBox::BBox(const Vec3 & p): min(p), max(p)
 	extent = max - min;
 }
 
-bool BBox::intersect(const Ray & ray, float * tnear, float * tfar) const
+bool BBox::intersect(const Ray & ray) const
 {
-	return false;
+	float tmin = (min._x - ray._origin._x) / ray._direction._x;
+	float tmax = (max._x - ray._origin._x) / ray._direction._x;
+
+	if (tmin > tmax) std::swap(tmin, tmax);
+
+	float tymin = (min._y - ray._origin._y) / ray._direction._y;
+	float tymax = (max._y - ray._origin._y) / ray._direction._y;
+
+	if (tymin > tymax)
+	{
+		std::swap(tymin, tymax);
+	}
+	if ((tmin > tymax) || (tymin > tmax))
+		return false;
+
+	if (tymin > tmin)
+		tmin = tymin;
+
+	if (tymax < tmax)
+		tmax = tymax;
+
+	float tzmin = (min._z - ray._origin._z) / ray._direction._z;
+	float tzmax = (max._z - ray._origin._z) / ray._direction._z;
+
+	if (tzmin > tzmax) {
+		std::swap(tzmin, tzmax);
+	}
+
+	if ((tmin > tzmax) || (tzmin > tmax))
+		return false;
+
+	if (tzmin > tmin)
+		tmin = tzmin;
+
+	if (tzmax < tmax)
+		tmax = tzmax;
+
+	return true;
 }
 
 void BBox::expandToInclude(const Vec3 & p)
