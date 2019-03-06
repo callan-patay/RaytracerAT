@@ -39,7 +39,7 @@ int main()
 		}
 	}
 
-	S.createBVH();
+	//S.createBVH();
 	S.createImage(0);
 	S.saveImage(0, "Image.png");
 

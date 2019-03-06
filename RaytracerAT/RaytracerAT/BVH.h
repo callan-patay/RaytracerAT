@@ -36,7 +36,7 @@ public:
 private:
 	std::vector<Surface*> copies;
 	std::vector<BVHNode> nodes;
-	BVHNode rootNode;
+	BVHNode* rootNode;
 	BBox worldBox;
 	int left_index;
 	int right_index;

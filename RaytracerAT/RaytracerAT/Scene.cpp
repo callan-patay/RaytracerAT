@@ -189,9 +189,9 @@ sf::Color Scene::launchRay(unsigned int numCam, const Ray & ray, int depth)
 		sf::Color lightReflect = launchRay(numCam, rayReflect, depth - 1)*(surface->_material._reflection);
 		lightCalc = lightCalc + lightReflect * 2;
 	}
-	clamp(0, 255, lightCalc.r);
-	clamp(0, 255, lightCalc.g);
-	clamp(0, 255, lightCalc.b);
+	lightCalc.r = clamp(0, 255, lightCalc.r);
+	lightCalc.g = clamp(0, 255, lightCalc.g);
+	lightCalc.b = clamp(0, 255, lightCalc.b);
 
 
 	return lightCalc;

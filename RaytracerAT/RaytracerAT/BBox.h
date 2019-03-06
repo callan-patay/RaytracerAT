@@ -4,9 +4,8 @@
 #include "Vector3.h"
 #include <stdint.h>
 
-struct BBox {
-
-
+struct BBox 
+{
 	Vec3 min, max, extent;
 	BBox();
 	BBox(const Vec3& min, const Vec3& max);

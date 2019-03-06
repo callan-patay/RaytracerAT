@@ -13,7 +13,7 @@ BVH::~BVH()
 
 void BVH::build(std::vector<Surface*>& objs)
 {
-	//rootNode;
+	rootNode = new BVHNode();
 	worldBox = BBox();
 
 
@@ -35,9 +35,9 @@ void BVH::build(std::vector<Surface*>& objs)
 
 
 
-	rootNode.setBBox(worldBox);
+	rootNode->setBBox(worldBox);
 
-	buildRecursive(0, copies.size() -1, &rootNode, 0);
+	buildRecursive(0, copies.size() -1, rootNode, 0);
 }
 
 void BVH::buildRecursive(int leftIndex, int rightIndex, BVHNode * node, int depth)
@@ -112,22 +112,22 @@ void BVH::buildRecursive(int leftIndex, int rightIndex, BVHNode * node, int dept
 bool BVH::intersect(const Ray & ray)
 {
 	Ray localRay = ray;
-	BVHNode currentNode = rootNode;
+	BVHNode* currentNode = rootNode;
 
-	if (!rootNode.getBBox().intersect(ray))
+	if (!rootNode->getBBox().intersect(ray))
 	{
 		return false;
 	}
 
 	for (int i = 0; i < infinity; i++)
 	{
-		if (!currentNode.isLeaf())
+		if (!currentNode->isLeaf())
 		{
-			if(currentNode.childNodes.leftChild().getBBox().intersect(ray) && currentNode.childNodes.rightChild().getBBox().intersect(ray))
+			if(currentNode->childNodes.leftChild->getBBox().intersect(ray) && currentNode->childNodes.rightChild->getBBox().intersect(ray))
 			{
 				
 			}
-			else if (currentNode.childNodes.leftChild().getBBox().intersect(ray) || currentNode.childNodes.rightChild().getBBox().intersect(ray))
+			else if (currentNode->childNodes.leftChild->getBBox().intersect(ray) || currentNode->childNodes.rightChild->getBBox().intersect(ray))
 			{
 
 			}

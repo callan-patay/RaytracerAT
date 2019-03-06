@@ -3,12 +3,6 @@
 
 #include "BBox.h"
 
-struct BVHChildren
-{
-	BVHNode leftChild;
-	BVHNode rightChild;
-};
-
 
 class BVHNode
 {
@@ -30,3 +24,10 @@ private:
 	unsigned int index;
 
 };
+
+struct BVHChildren
+{
+	BVHNode* leftChild = nullptr;
+	BVHNode* rightChild = nullptr;
+};
+
