@@ -19,6 +19,7 @@ void BVHManager::build(std::vector<Surface*>& objs)
 	for (auto& obj : objs)
 	{
 		BBox * tempBox;
+		tempBox = new BBox();
 
 		tempBox->min._y = obj->getBBox().min._y;
 		tempBox->min._x = obj->getBBox().min._x;

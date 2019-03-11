@@ -30,6 +30,7 @@ public:
 	void build(std::vector<Surface*> &objs);
 	void buildRecursive(int leftIndex, int rightIndex, BVHNode* node, int depth);
 	bool intersect(const Ray& ray);
+	bool intersect(const Ray & ray, BVHNode* currentNode, float &t);
 	//bool intersect(const Ray& ray)
 
 

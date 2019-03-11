@@ -100,8 +100,8 @@ void BVH::buildRecursive(int leftIndex, int rightIndex, BVHNode * node, int dept
 		rightNode->setBBox(rightBox);
 		rightNode->makeNode(splitIndex, rightIndex - splitIndex);
 
-		node->childNodes.leftChild = leftNode;
-		node->childNodes.rightChild = rightNode;
+		node->leftChild = leftNode;
+		node->rightChild = rightNode;
 
 		
 		buildRecursive(left_index, splitIndex, leftNode, depth + 1);
@@ -111,8 +111,18 @@ void BVH::buildRecursive(int leftIndex, int rightIndex, BVHNode * node, int dept
 
 bool BVH::intersect(const Ray & ray)
 {
+	float t = FLT_MAX;
+	return intersect(ray, rootNode, t);
+}
+
+bool BVH::intersect(const Ray & ray, BVHNode* currentNode, float &t)
+{
+	// Intersect ray with this node AABB
+	// If intersection:
+	//   If leaf: Intersect spheres, and update t
+	//   Otherwise try intersecting children intersect(ray, currentNode->leftChild, t)
 	Ray localRay = ray;
-	BVHNode* currentNode = rootNode;
+	//BVHNode* currentNode = rootNode;
 
 	if (!rootNode->getBBox().intersect(ray))
 	{
@@ -123,11 +133,11 @@ bool BVH::intersect(const Ray & ray)
 	{
 		if (!currentNode->isLeaf())
 		{
-			if(currentNode->childNodes.leftChild->getBBox().intersect(ray) && currentNode->childNodes.rightChild->getBBox().intersect(ray))
+			if(currentNode->leftChild->getBBox().intersect(ray) && currentNode->rightChild->getBBox().intersect(ray))
 			{
 				
 			}
-			else if (currentNode->childNodes.leftChild->getBBox().intersect(ray) || currentNode->childNodes.rightChild->getBBox().intersect(ray))
+			else if (currentNode->leftChild->getBBox().intersect(ray) || currentNode->rightChild->getBBox().intersect(ray))
 			{
 
 			}

@@ -16,18 +16,13 @@ public:
 	void setBBox(BBox box);
 	void makeLeaf(unsigned int index_, unsigned int n_objs_);
 	void makeNode(unsigned int left_index_, unsigned int n_objs_);
-	BVHChildren childNodes;
+	BVHNode* leftChild;
+	BVHNode* rightChild;
 private:
 	BBox bbox;
 	bool leaf;
 	unsigned int n_objs;
 	unsigned int index;
-
 };
 
-struct BVHChildren
-{
-	BVHNode* leftChild = nullptr;
-	BVHNode* rightChild = nullptr;
-};
 
