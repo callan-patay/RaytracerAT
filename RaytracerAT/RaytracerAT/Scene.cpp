@@ -171,7 +171,7 @@ sf::Color Scene::launchRay(unsigned int numCam, const Ray & ray, int depth)
 	
 
 	std::pair<Surface*, float> P = Intersection(ray);
-
+	//std::pair<Surface*, float> P = bvh->intersect(ray);
 	Surface* surface = P.first;
 	Vec3 pos = ray.Calculate_position(P.second);
 
@@ -207,6 +207,7 @@ sf::Color Scene::PhongIllumination(Surface * surface, const Vec3 & rayDir, const
 		float visibleObj = light.Collision(lightRay).second;
 
 		std::pair<Surface*, float> P = Intersection(lightRay);
+		//std::pair<Surface*, float> P = bvh->intersect(lightRay);
 		Surface* s = P.first;
 		float t = P.second;
 

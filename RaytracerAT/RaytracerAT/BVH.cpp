@@ -1,6 +1,6 @@
 #include "BVH.h"
 #include "ComparePrimitives.h"
-
+#include <iostream>
 #include "Surface.h"
 BVH::BVH()
 {
@@ -45,6 +45,8 @@ void BVH::buildRecursive(int leftIndex, int rightIndex, BVHNode * node, int dept
 	if ((rightIndex - leftIndex) <= 4 || depth > 100)
 	{
 		node->makeLeaf(leftIndex, rightIndex);
+		std::cout << "Leaf: " << node->getIndex() << " Objects: " << node->getNObjs() << std::endl;
+		
 	}
 	else
 	{
@@ -103,19 +105,20 @@ void BVH::buildRecursive(int leftIndex, int rightIndex, BVHNode * node, int dept
 		node->leftChild = leftNode;
 		node->rightChild = rightNode;
 
-		
+		std::cout << "Node: " << node->getIndex() << " Objects: " << node->getNObjs() << std::endl;
+
 		buildRecursive(left_index, splitIndex, leftNode, depth + 1);
 		buildRecursive(splitIndex, left_index, rightNode, depth + 1);
 	}
 }
 
-bool BVH::intersect(const Ray & ray)
+std::pair<Surface*, float> BVH::intersect(const Ray & ray)
 {
 	float t = FLT_MAX;
 	return intersect(ray, rootNode, t);
 }
 
-bool BVH::intersect(const Ray & ray, BVHNode* currentNode, float &t)
+std::pair<Surface*, float> BVH::intersect(const Ray & ray, BVHNode* currentNode, float &t)
 {
 	// Intersect ray with this node AABB
 	// If intersection:
@@ -124,35 +127,70 @@ bool BVH::intersect(const Ray & ray, BVHNode* currentNode, float &t)
 	Ray localRay = ray;
 	//BVHNode* currentNode = rootNode;
 
-	if (!rootNode->getBBox().intersect(ray))
-	{
-		return false;
-	}
+	float t_min = t;
+	Surface* surface = nullptr;
+	bool visible = false;
+	
 
-	for (int i = 0; i < infinity; i++)
+
+	if (currentNode->getBBox().intersect(ray))
 	{
-		if (!currentNode->isLeaf())
+		if (currentNode->isLeaf())
 		{
-			if(currentNode->leftChild->getBBox().intersect(ray) && currentNode->rightChild->getBBox().intersect(ray))
+			for (int i = currentNode->getIndex(); i < currentNode->getNObjs() + currentNode->getIndex(); i++)
 			{
-				
-			}
-			else if (currentNode->leftChild->getBBox().intersect(ray) || currentNode->rightChild->getBBox().intersect(ray))
-			{
-
-			}
-			else
-			{
-
+				std::pair<bool, float> P = copies[i]->Collision(localRay);
+				float t = P.second;
+				if (P.first && (t < t_min || visible == false))
+				{
+					t_min = t;
+					surface = copies[i];
+					visible = true;
+				}
 			}
 		}
 		else
 		{
-
+			if (currentNode->leftChild->getBBox().intersect(localRay))
+			{
+				intersect(localRay, currentNode->leftChild, t_min);
+			}
+			else if(currentNode->rightChild->getBBox().intersect(localRay))
+			{
+				intersect(localRay, currentNode->rightChild, t_min);
+			}
 		}
 	}
 
 
+	if (visible)
+	{
+		return { surface, t_min };
+	}
 
-	return false;
+	//for (int i = 0; i < infinity; i++)
+	//{
+	//	if (!currentNode->isLeaf())
+	//	{
+	//		if(currentNode->leftChild->getBBox().intersect(ray) && currentNode->rightChild->getBBox().intersect(ray))
+	//		{
+	//			
+	//		}
+	//		else if (currentNode->leftChild->getBBox().intersect(ray) || currentNode->rightChild->getBBox().intersect(ray))
+	//		{
+
+	//		}
+	//		else
+	//		{
+
+	//		}
+	//	}
+	//	else
+	//	{
+
+	//	}
+	//}
+
+	return { nullptr, -1.0 };
+
 }
