@@ -42,9 +42,9 @@ void BVH::build(std::vector<Surface*>& objs)
 
 void BVH::buildRecursive(int leftIndex, int rightIndex, BVHNode * node, int depth)
 {
-	if ((rightIndex - leftIndex) <= 4 || depth > 100)
+	if ((rightIndex - leftIndex) <= 4 || depth > 300)
 	{
-		node->makeLeaf(leftIndex, rightIndex);
+		node->makeLeaf(leftIndex, rightIndex - left_index);
 		std::cout << "Leaf: " << node->getIndex() << " Objects: " << node->getNObjs() << std::endl;
 		
 	}
@@ -53,13 +53,52 @@ void BVH::buildRecursive(int leftIndex, int rightIndex, BVHNode * node, int dept
 		int splitIndex = 0;
 
 		ComparePrimitives cmp;
-		cmp.sort_dim = 0;
 
-		std::sort(copies.begin() + leftIndex, copies.begin() + rightIndex, cmp);
 
-		float splitPartition = std::abs(copies[leftIndex]->getCentroid()._x - copies[rightIndex]->getCentroid()._x) / 2;
-		splitPartition += copies[leftIndex]->getCentroid()._x;
+		float splitPartition = 0;
+		int biggestAxis = 0;
+		for (int i = 0; i < 2; i++)
+		{
+			cmp.sort_dim = i;
 
+			std::sort(copies.begin() + leftIndex, copies.begin() + rightIndex, cmp);
+			
+			if (i == 0)
+			{
+				float splitPartition_x = std::abs(copies[leftIndex]->getCentroid()._x - copies[rightIndex]->getCentroid()._x) / 2;
+				splitPartition_x += copies[leftIndex]->getCentroid()._x;
+				
+				splitPartition = std::max(splitPartition, splitPartition_x);
+				if (splitPartition_x > splitPartition)
+				{
+					biggestAxis = i;
+				}
+			}
+			else if (i == 1)
+			{
+				float splitPartition_y = std::abs(copies[leftIndex]->getCentroid()._y - copies[rightIndex]->getCentroid()._y) / 2;
+				splitPartition_y += copies[leftIndex]->getCentroid()._y;
+
+				splitPartition = std::max(splitPartition, splitPartition_y);
+				if (splitPartition_y > splitPartition)
+				{
+					biggestAxis = i;
+				}
+			}
+			else if (i == 2)
+			{
+				float splitPartition_z = std::abs(copies[leftIndex]->getCentroid()._z - copies[rightIndex]->getCentroid()._z) / 2;
+				splitPartition_z += copies[leftIndex]->getCentroid()._z;
+
+				splitPartition = std::max(splitPartition, splitPartition_z);
+				if (splitPartition_z > splitPartition)
+				{
+					biggestAxis = i;
+				}
+			}
+		}
+
+		
 
 		BBox leftBox = BBox();
 		leftBox.min = Vec3(infinity,infinity,infinity);
@@ -71,29 +110,108 @@ void BVH::buildRecursive(int leftIndex, int rightIndex, BVHNode * node, int dept
 
 		for (int i = leftIndex; i < rightIndex; i++)
 		{
-			if (copies[i]->getCentroid()._x < splitPartition)
+			switch (biggestAxis)
 			{
-				leftBox.min._x =  std::min(leftBox.min._x, copies[i]->getBBox().min._x);
-				leftBox.min._y = std::min(leftBox.min._y, copies[i]->getBBox().min._y);
-				leftBox.min._z = std::min(leftBox.min._z, copies[i]->getBBox().min._z);
-				
-				leftBox.max._x = std::max(leftBox.max._x, copies[i]->getBBox().max._x);
-				leftBox.max._y = std::max(leftBox.max._y, copies[i]->getBBox().max._y);
-				leftBox.max._z = std::max(leftBox.max._z, copies[i]->getBBox().max._z);
+			case 0:
+				if (copies[i]->getCentroid()._x < splitPartition)
+				{
+					leftBox.min._x = std::min(leftBox.min._x, copies[i]->getBBox().min._x);
+					leftBox.min._y = std::min(leftBox.min._y, copies[i]->getBBox().min._y);
+					leftBox.min._z = std::min(leftBox.min._z, copies[i]->getBBox().min._z);
 
-				splitIndex++;
-			}
-			else
-			{
-				rightBox.min._x = std::min(rightBox.min._x, copies[i]->getBBox().min._x);
-				rightBox.min._y = std::min(rightBox.min._y, copies[i]->getBBox().min._y);
-				rightBox.min._z = std::min(rightBox.min._z, copies[i]->getBBox().min._z);
+					leftBox.max._x = std::max(leftBox.max._x, copies[i]->getBBox().max._x);
+					leftBox.max._y = std::max(leftBox.max._y, copies[i]->getBBox().max._y);
+					leftBox.max._z = std::max(leftBox.max._z, copies[i]->getBBox().max._z);
 
-				rightBox.max._x = std::max(leftBox.max._x, copies[i]->getBBox().max._x);
-				rightBox.max._y = std::max(leftBox.max._y, copies[i]->getBBox().max._y);
-				rightBox.max._z = std::max(leftBox.max._z, copies[i]->getBBox().max._z);
+					splitIndex++;
+				}
+				else
+				{
+					rightBox.min._x = std::min(rightBox.min._x, copies[i]->getBBox().min._x);
+					rightBox.min._y = std::min(rightBox.min._y, copies[i]->getBBox().min._y);
+					rightBox.min._z = std::min(rightBox.min._z, copies[i]->getBBox().min._z);
+
+					rightBox.max._x = std::max(rightBox.max._x, copies[i]->getBBox().max._x);
+					rightBox.max._y = std::max(rightBox.max._y, copies[i]->getBBox().max._y);
+					rightBox.max._z = std::max(rightBox.max._z, copies[i]->getBBox().max._z);
+				}
+				break;
+			case 1:
+				if (copies[i]->getCentroid()._y < splitPartition)
+				{
+					leftBox.min._x = std::min(leftBox.min._x, copies[i]->getBBox().min._x);
+					leftBox.min._y = std::min(leftBox.min._y, copies[i]->getBBox().min._y);
+					leftBox.min._z = std::min(leftBox.min._z, copies[i]->getBBox().min._z);
+
+					leftBox.max._x = std::max(leftBox.max._x, copies[i]->getBBox().max._x);
+					leftBox.max._y = std::max(leftBox.max._y, copies[i]->getBBox().max._y);
+					leftBox.max._z = std::max(leftBox.max._z, copies[i]->getBBox().max._z);
+
+					splitIndex++;
+				}
+				else
+				{
+					rightBox.min._x = std::min(rightBox.min._x, copies[i]->getBBox().min._x);
+					rightBox.min._y = std::min(rightBox.min._y, copies[i]->getBBox().min._y);
+					rightBox.min._z = std::min(rightBox.min._z, copies[i]->getBBox().min._z);
+
+					rightBox.max._x = std::max(rightBox.max._x, copies[i]->getBBox().max._x);
+					rightBox.max._y = std::max(rightBox.max._y, copies[i]->getBBox().max._y);
+					rightBox.max._z = std::max(rightBox.max._z, copies[i]->getBBox().max._z);
+				}
+				break;
+			case 2:
+				if (copies[i]->getCentroid()._z < splitPartition)
+				{
+					leftBox.min._x = std::min(leftBox.min._x, copies[i]->getBBox().min._x);
+					leftBox.min._y = std::min(leftBox.min._y, copies[i]->getBBox().min._y);
+					leftBox.min._z = std::min(leftBox.min._z, copies[i]->getBBox().min._z);
+
+					leftBox.max._x = std::max(leftBox.max._x, copies[i]->getBBox().max._x);
+					leftBox.max._y = std::max(leftBox.max._y, copies[i]->getBBox().max._y);
+					leftBox.max._z = std::max(leftBox.max._z, copies[i]->getBBox().max._z);
+
+					splitIndex++;
+				}
+				else
+				{
+					rightBox.min._x = std::min(rightBox.min._x, copies[i]->getBBox().min._x);
+					rightBox.min._y = std::min(rightBox.min._y, copies[i]->getBBox().min._y);
+					rightBox.min._z = std::min(rightBox.min._z, copies[i]->getBBox().min._z);
+
+					rightBox.max._x = std::max(rightBox.max._x, copies[i]->getBBox().max._x);
+					rightBox.max._y = std::max(rightBox.max._y, copies[i]->getBBox().max._y);
+					rightBox.max._z = std::max(rightBox.max._z, copies[i]->getBBox().max._z);
+				}
+				break;
+			default:
+				break;
 			}
+		//if (copies[i]->getCentroid()._x < splitPartition)
+		//{
+		//	leftBox.min._x = std::min(leftBox.min._x, copies[i]->getBBox().min._x);
+		//	leftBox.min._y = std::min(leftBox.min._y, copies[i]->getBBox().min._y);
+		//	leftBox.min._z = std::min(leftBox.min._z, copies[i]->getBBox().min._z);
+
+		//	leftBox.max._x = std::max(leftBox.max._x, copies[i]->getBBox().max._x);
+		//	leftBox.max._y = std::max(leftBox.max._y, copies[i]->getBBox().max._y);
+		//	leftBox.max._z = std::max(leftBox.max._z, copies[i]->getBBox().max._z);
+
+		//	splitIndex++;
+		//}
+		//else
+		//{
+		//	rightBox.min._x = std::min(rightBox.min._x, copies[i]->getBBox().min._x);
+		//	rightBox.min._y = std::min(rightBox.min._y, copies[i]->getBBox().min._y);
+		//	rightBox.min._z = std::min(rightBox.min._z, copies[i]->getBBox().min._z);
+
+		//	rightBox.max._x = std::max(leftBox.max._x, copies[i]->getBBox().max._x);
+		//	rightBox.max._y = std::max(leftBox.max._y, copies[i]->getBBox().max._y);
+		//	rightBox.max._z = std::max(leftBox.max._z, copies[i]->getBBox().max._z);
+		//}
 		}
+
+
 
 		BVHNode * leftNode = new BVHNode();
 		leftNode->setBBox(leftBox);
@@ -108,7 +226,7 @@ void BVH::buildRecursive(int leftIndex, int rightIndex, BVHNode * node, int dept
 		std::cout << "Node: " << node->getIndex() << " Objects: " << node->getNObjs() << std::endl;
 
 		buildRecursive(left_index, splitIndex, leftNode, depth + 1);
-		buildRecursive(splitIndex, left_index, rightNode, depth + 1);
+		buildRecursive(splitIndex, right_index, rightNode, depth + 1);
 	}
 }
 
@@ -151,14 +269,12 @@ std::pair<Surface*, float> BVH::intersect(const Ray & ray, BVHNode* currentNode,
 		}
 		else
 		{
-			if (currentNode->leftChild->getBBox().intersect(localRay))
-			{
+
 				intersect(localRay, currentNode->leftChild, t_min);
-			}
-			else if(currentNode->rightChild->getBBox().intersect(localRay))
-			{
+
+
 				intersect(localRay, currentNode->rightChild, t_min);
-			}
+			
 		}
 	}
 
