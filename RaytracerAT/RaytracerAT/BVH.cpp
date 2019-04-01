@@ -57,7 +57,7 @@ void BVH::buildRecursive(int leftIndex, int rightIndex, BVHNode * node, int dept
 
 		float splitPartition = 0;
 		int biggestAxis = 0;
-		for (int i = 0; i < 2; i++)
+		for (int i = 0; i < 3; i++)
 		{
 			cmp.sort_dim = i;
 
@@ -98,6 +98,10 @@ void BVH::buildRecursive(int leftIndex, int rightIndex, BVHNode * node, int dept
 			}
 		}
 
+		cmp.sort_dim = biggestAxis;
+
+		std::sort(copies.begin() + leftIndex, copies.begin() + rightIndex, cmp);
+
 		
 
 		BBox leftBox = BBox();
@@ -106,6 +110,18 @@ void BVH::buildRecursive(int leftIndex, int rightIndex, BVHNode * node, int dept
 		BBox rightBox = BBox();
 		rightBox.min = Vec3(infinity, infinity, infinity);
 		rightBox.max = Vec3(-infinity, -infinity, -infinity);
+
+		// Find the middle point of the world box
+		 // for each object
+			// Find side of the biggestAxis the object is on
+			// Update the bounding box and a counter for left and right
+
+		// If either counter is 0
+			// Reset
+			// for half the objects
+				// Update left box
+			// For the other half
+				// Update the right box
 
 
 		for (int i = leftIndex; i < rightIndex; i++)
@@ -209,6 +225,11 @@ void BVH::buildRecursive(int leftIndex, int rightIndex, BVHNode * node, int dept
 		//	rightBox.max._y = std::max(leftBox.max._y, copies[i]->getBBox().max._y);
 		//	rightBox.max._z = std::max(leftBox.max._z, copies[i]->getBBox().max._z);
 		//}
+		}
+
+		if (splitIndex == 0 || splitIndex == rightIndex)
+		{
+			splitIndex = (rightIndex - leftIndex) / 2;
 		}
 
 
