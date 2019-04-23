@@ -7,9 +7,8 @@ Camera::Camera(Vec3 p, Vec3 d, float z, sf::Vector2i res, Vec3 orientation)
 	_position = p;
 	_direction = d - p;
 	_direction.normalize();
-	_zoom = z;
 	_resolution = res;
-
+	_zoom = z;
 	_up = orientation;
 	_up = _up - _direction * (_direction * _up);
 
@@ -23,7 +22,7 @@ Camera::Camera(Vec3 p, Vec3 d, float z, sf::Vector2i res, Vec3 orientation)
 	}
 	else
 	{
-		_right = _direction.vector_procduct(_up);
+		_right = _direction.cross_product(_up);
 	}
 
 	_result.create(res.x, res.y);

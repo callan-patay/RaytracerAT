@@ -13,7 +13,7 @@
 //	Vec3 v1v2 = v2 - v1;
 //	Vec3 v1v3 = v3 - v1;
 //
-//	Vec3 N = v1v2.vector_procduct(v1v3);
+//	Vec3 N = v1v2.cross_product(v1v3);
 //	N.normalize();
 //
 //	
@@ -29,7 +29,7 @@
 //	constexpr float kEpsilon = 1e-8;
 //	Vec3 v1v2 = v2 - v1;
 //	Vec3 v1v3 = v3 - v1;
-//	Vec3 N = v1v2.vector_procduct(v1v3);
+//	Vec3 N = v1v2.cross_product(v1v3);
 //	float denom = N.dot_product(N);
 //
 //	//if the ray and plane are parallel, ignore it
@@ -53,7 +53,7 @@
 //	//edge 1
 //	Vec3 edge1 = v2 - v1;
 //	Vec3 vp1 = P - v1;
-//	C = edge1.vector_procduct(vp1);
+//	C = edge1.cross_product(vp1);
 //	if (N.dot_product(C) < 0)
 //	{
 //		return { false, -1 };
@@ -62,7 +62,7 @@
 //	//edge 2
 //	Vec3 edge2 = v3 - v2;
 //	Vec3 vp2 = P - v2;
-//	C = edge2.vector_procduct(vp2);
+//	C = edge2.cross_product(vp2);
 //	if ((u = N.dot_product(C)) < 0)
 //	{
 //		return { false, -1 };
@@ -71,7 +71,7 @@
 //	//edge 3
 //	Vec3 edge3 = v1 - v3;
 //	Vec3 vp3 = P - v3;
-//	C = edge3.vector_procduct(vp3);
+//	C = edge3.cross_product(vp3);
 //	if ((v = N.dot_product(C)) < 0)
 //	{
 //		return { false, -1 };

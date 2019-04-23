@@ -120,10 +120,10 @@ void Scene::displayImage(unsigned int numCam)
 	sf::ContextSettings settings;
 	settings.antialiasingLevel = 10;
 
-	unsigned int length = camList[numCam]._resolution.x;
+	unsigned int width = camList[numCam]._resolution.x;
 	unsigned int height = camList[numCam]._resolution.y;
 
-	sf::RenderWindow window(sf::VideoMode(length, height, 32), "Raytrace", sf::Style::Default, settings);
+	sf::RenderWindow window(sf::VideoMode(width, height, 32), "Raytrace", sf::Style::Default, settings);
 	window.setFramerateLimit(60);
 
 	sf::Texture T;
@@ -170,8 +170,8 @@ sf::Color Scene::launchRay(unsigned int numCam, const Ray & ray, int depth)
 
 	
 
-	//std::pair<Surface*, float> P = Intersection(ray);
-	std::pair<Surface*, float> P = bvh->intersect(ray);
+	std::pair<Surface*, float> P = Intersection(ray);
+	//std::pair<Surface*, float> P = bvh->intersect(ray);
 	Surface* surface = P.first;
 	Vec3 pos = ray.Calculate_position(P.second);
 
@@ -181,7 +181,7 @@ sf::Color Scene::launchRay(unsigned int numCam, const Ray & ray, int depth)
 	}
 
 	Vec3 norm = surface->Normal(pos);
-	sf::Color lightCalc = PhongIllumination(surface, ray._direction, pos, norm);
+	sf::Color lightCalc = Phong(surface, ray._direction, pos, norm);
 
 	if (surface->_material._reflection > 0)
 	{
@@ -197,7 +197,7 @@ sf::Color Scene::launchRay(unsigned int numCam, const Ray & ray, int depth)
 	return lightCalc;
 }
 
-sf::Color Scene::PhongIllumination(Surface * surface, const Vec3 & rayDir, const Vec3 & pos, const Vec3 & N)
+sf::Color Scene::Phong(Surface * surface, const Vec3 & rayDir, const Vec3 & pos, const Vec3 & N)
 {
 	sf::Color colour = surface->_colour * ambientLight;
 
@@ -206,8 +206,8 @@ sf::Color Scene::PhongIllumination(Surface * surface, const Vec3 & rayDir, const
 		Ray lightRay = light.createRay(pos);
 		float visibleObj = light.Collision(lightRay).second;
 
-		//std::pair<Surface*, float> P = Intersection(lightRay);
-		std::pair<Surface*, float> P = bvh->intersect(lightRay);
+		std::pair<Surface*, float> P = Intersection(lightRay);
+		//std::pair<Surface*, float> P = bvh->intersect(lightRay);
 		Surface* s = P.first;
 		float t = P.second;
 

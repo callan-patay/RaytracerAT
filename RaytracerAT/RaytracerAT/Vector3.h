@@ -26,13 +26,13 @@ public:
 	const float& operator[](const unsigned int i) const { return (&_x)[i]; }
 
 
-	float length2() const;
-	float length() const;
+	float squared() const;
+	float magnitude() const;
 
 	void normalize();
 
 	float dot_product(const Vec3& v) const;
-	Vec3 vector_procduct(const Vec3&) const;
+	Vec3 cross_product(const Vec3&) const;
 
 };
 

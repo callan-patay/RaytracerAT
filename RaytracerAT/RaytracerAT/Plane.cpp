@@ -17,7 +17,7 @@ Vec3 Plane::Normal(const Vec3 &)
 }
 
 std::pair<bool, float> Plane::Collision(const Ray &r)
-{
+{ 
 	float t = 0;
 	if (r._direction * _vecOrthagonal != 0)
 	{

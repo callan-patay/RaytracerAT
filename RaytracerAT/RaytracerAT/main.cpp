@@ -41,7 +41,8 @@ int main()
 
 	S.createBVH();
 	S.createImage(0);
-	S.saveImage(0, "Image.png");
+	S.saveImage(0, "Image1.png");
+	S.displayImage(0);
 
 
 

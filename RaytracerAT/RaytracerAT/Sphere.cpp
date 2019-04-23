@@ -22,11 +22,11 @@ Vec3 Sphere::Normal(const Vec3 & pos)
 
 std::pair<bool, float> Sphere::Collision(const Ray & r)
 {
-	float a = r._direction.length2();
+	float a = r._direction.squared();
 	float b = 2 * (r._origin * r._direction - _centre * r._direction);
-	float c = r._origin.length2() + _centre.length2() - (r._origin * _centre) * 2 - _radius*_radius;
+	float c = r._origin.squared() + _centre.squared() - (r._origin * _centre) * 2 - _radius*_radius;
 
-	float delta = b*b - 4 * a*c;
+	float discriminant = b*b - 4 * a*c;
 
 
 	float t = -1;
@@ -34,13 +34,13 @@ std::pair<bool, float> Sphere::Collision(const Ray & r)
 	float t2 = 0;
 
 
-	if (delta > 0.00001 && a != 0)
+	if (discriminant > 0.00001 && a != 0)
 	{
-		t1 = (-b - sqrt(delta)) / (2 * a);
-		t2 = (-b + sqrt(delta)) / (2 * a);
+		t1 = (-b - sqrt(discriminant)) / (2 * a);
+		t2 = (-b + sqrt(discriminant)) / (2 * a);
 		t = t1 > t2 ? t2 : t1;
 	}
-	else if (delta > 0)
+	else if (discriminant > 0)
 	{
 		t = -b / (2 * a);
 	}

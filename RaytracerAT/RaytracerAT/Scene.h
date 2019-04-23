@@ -43,7 +43,7 @@ public:
 
 private:
 	sf::Color launchRay(unsigned int numCam, const Ray&, int depth);
-	sf::Color PhongIllumination(Surface*, const Vec3& rayDir, const Vec3& pos, const Vec3& N);
+	sf::Color Phong(Surface*, const Vec3& rayDir, const Vec3& pos, const Vec3& N);
 
 	std::pair<Surface*, float> Intersection(const Ray&);
 

@@ -42,19 +42,19 @@ bool Vec3::operator==(const Vec3 & b) const
 
 
 
-float Vec3::length2() const
+float Vec3::squared() const
 {
 	return _x*_x + _y*_y + _z*_z;
 }
 
-float Vec3::length() const
+float Vec3::magnitude() const
 {
-	return sqrt(length2());
+	return sqrt(squared());
 }
 
 void Vec3::normalize()
 {
-	float n = length();
+	float n = magnitude();
 	if (n != 0)
 	{
 		_x /= n;
@@ -68,7 +68,7 @@ float Vec3::dot_product(const Vec3 & v) const
 	return _x*v._x + _y *v._y + _z*v._z;
 }
 
-Vec3 Vec3::vector_procduct(const Vec3 & b) const
+Vec3 Vec3::cross_product(const Vec3 & b) const
 {
 	return { _y * b._z - _z * b._y,
 		_z * b._x - _x * b._z,
