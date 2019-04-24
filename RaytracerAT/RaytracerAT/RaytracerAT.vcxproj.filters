@@ -63,12 +63,6 @@
     <ClCompile Include="ComparePrimitives.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BVHManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BVHBranch.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Vector3.h">
@@ -114,12 +108,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ComparePrimitives.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BVHManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BVHBranch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
