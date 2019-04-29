@@ -111,18 +111,6 @@ void BVH::buildRecursive(int leftIndex, int rightIndex, BVHNode * node, int dept
 		rightBox.min = Vec3(infinity, infinity, infinity);
 		rightBox.max = Vec3(-infinity, -infinity, -infinity);
 
-		// Find the middle point of the world box
-		 // for each object
-			// Find side of the biggestAxis the object is on
-			// Update the bounding box and a counter for left and right
-
-		// If either counter is 0
-			// Reset
-			// for half the objects
-				// Update left box
-			// For the other half
-				// Update the right box
-
 
 		for (int i = leftIndex; i < rightIndex; i++)
 		{
@@ -203,28 +191,6 @@ void BVH::buildRecursive(int leftIndex, int rightIndex, BVHNode * node, int dept
 			default:
 				break;
 			}
-		//if (copies[i]->getCentroid()._x < splitPartition)
-		//{
-		//	leftBox.min._x = std::min(leftBox.min._x, copies[i]->getBBox().min._x);
-		//	leftBox.min._y = std::min(leftBox.min._y, copies[i]->getBBox().min._y);
-		//	leftBox.min._z = std::min(leftBox.min._z, copies[i]->getBBox().min._z);
-
-		//	leftBox.max._x = std::max(leftBox.max._x, copies[i]->getBBox().max._x);
-		//	leftBox.max._y = std::max(leftBox.max._y, copies[i]->getBBox().max._y);
-		//	leftBox.max._z = std::max(leftBox.max._z, copies[i]->getBBox().max._z);
-
-		//	splitIndex++;
-		//}
-		//else
-		//{
-		//	rightBox.min._x = std::min(rightBox.min._x, copies[i]->getBBox().min._x);
-		//	rightBox.min._y = std::min(rightBox.min._y, copies[i]->getBBox().min._y);
-		//	rightBox.min._z = std::min(rightBox.min._z, copies[i]->getBBox().min._z);
-
-		//	rightBox.max._x = std::max(leftBox.max._x, copies[i]->getBBox().max._x);
-		//	rightBox.max._y = std::max(leftBox.max._y, copies[i]->getBBox().max._y);
-		//	rightBox.max._z = std::max(leftBox.max._z, copies[i]->getBBox().max._z);
-		//}
 		}
 
 		if (splitIndex == 0 || splitIndex == rightIndex)
@@ -259,12 +225,9 @@ std::pair<Surface*, float> BVH::intersect(const Ray & ray)
 
 std::pair<Surface*, float> BVH::intersect(const Ray & ray, BVHNode* currentNode, float &t)
 {
-	// Intersect ray with this node AABB
-	// If intersection:
-	//   If leaf: Intersect spheres, and update t
-	//   Otherwise try intersecting children intersect(ray, currentNode->leftChild, t)
+
 	Ray localRay = ray;
-	//BVHNode* currentNode = rootNode;
+
 
 	float t_min = t;
 	Surface* surface = nullptr;
