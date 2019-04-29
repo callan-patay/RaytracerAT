@@ -28,11 +28,9 @@ std::pair<bool, float> Sphere::Collision(const Ray & r)
 
 	float discriminant = b*b - 4 * a*c;
 
-
 	float t = -1;
 	float t1 = 0;
 	float t2 = 0;
-
 
 	if (discriminant > 0.00001 && a != 0)
 	{

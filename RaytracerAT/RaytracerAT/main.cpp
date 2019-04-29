@@ -39,8 +39,10 @@ int main()
 		}
 	}
 
-	//S.createBVH();
+	sf::Clock clock;
 	S.createImage(0);
+	sf::Time elapsed = clock.getElapsedTime();
+	std::cout << elapsed.asSeconds() << std::endl;
 	S.saveImage(0, "Image1.png");
 	S.displayImage(0);
 

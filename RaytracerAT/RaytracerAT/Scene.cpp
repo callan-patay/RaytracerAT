@@ -7,7 +7,7 @@
 #include <cmath>
 #include <thread>
 
-Scene::Scene(): Scene(sf::Color(255,255,255), 0.1)
+Scene::Scene(): Scene(sf::Color(0,0,0), 0.1)
 {
 }
 
@@ -88,13 +88,17 @@ void Scene::createImage(unsigned int numCam, int depthMax, bool debug)
 	float b = nbr / 100;
 	int p = 0;
 	int r = 0;
-	
-	//please ignore this
+
+	//divide the height into quaters
 	int zero = 0;
 	int one = (h / 4) * 2;
 	int two = (h / 4) * 3;
 	int three = h / 4;
 	int four = 4;
+
+
+
+
 	std::thread thread1(&Scene::renderSection,this, zero, three, w, h, numCam, depthMax);
 	std::thread thread2(&Scene::renderSection,this,  three, one , w, h, numCam, depthMax);
 	std::thread thread3(&Scene::renderSection,this, one, two, w, h, numCam, depthMax);
