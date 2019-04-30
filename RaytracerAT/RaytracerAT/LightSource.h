@@ -27,7 +27,7 @@ public:
 
 	Vec3 _position;
 	float _lightIntensity;
-	sf::Color _color;
+	sf::Color _colour;
 
 
 };

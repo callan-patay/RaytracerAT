@@ -18,7 +18,7 @@ struct StackItem
 	float t;
 };
 
-
+//doesn't work
 class BVH
 {
 public:

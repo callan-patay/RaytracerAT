@@ -3,7 +3,7 @@
 
 #include "BBox.h"
 
-
+//not used
 class BVHNode
 {
 public:

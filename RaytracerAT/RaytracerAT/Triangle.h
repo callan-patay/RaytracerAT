@@ -1,7 +1,7 @@
 #pragma once
 #include "Surface.h"
 
-
+//doesnt work
 //class Triangle : public Surface
 //{
 //public: 

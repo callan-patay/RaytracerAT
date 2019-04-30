@@ -11,12 +11,6 @@
 #include "LightSource.h"
 #include "BVH.h"
 
-//struct Node {
-//	//bounding Volume;
-//	Node leftChild;
-//	Node rightChild;
-//
-//};
 
 
 class Scene

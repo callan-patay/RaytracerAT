@@ -12,7 +12,7 @@ LightSource::LightSource(Vec3 pos, sf::Color c): LightSource(pos, 1.0, c)
 {
 }
 
-LightSource::LightSource(Vec3 pos, float f, sf::Color c): _position(pos), _lightIntensity(f), _color(c)
+LightSource::LightSource(Vec3 pos, float f, sf::Color c): _position(pos), _lightIntensity(f), _colour(c)
 {
 }
 
